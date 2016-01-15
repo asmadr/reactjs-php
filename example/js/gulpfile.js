@@ -9,7 +9,7 @@ const browserify = require('gulp-browserify');
 const uglify = require("gulp-uglify");
 
 gulp.task('jsx', () =>
-	gulp.src('./src/app.jsx')
+	gulp.src('./src/*.jsx')
 		.pipe(babel({
 			presets: ['es2015', 'stage-0', 'react'],
 			sourceMap: false

@@ -7,10 +7,15 @@ $rjs = new ReactJS([
 ]);
 
 $rjs->entry([
-	'component' => 'MainComponent',
+	'component' => 'App',
 	'require'	=> __DIR__ . '/../js/bld/app.js',
-	'props'		=> ['title' => 'SSR React PHP!']
+	'props'		=> [
+		'title' => 'SSR React PHP!',
+		'h2' => 'React JS render on server with PHP'
+	],
+	'static'	=> true
 ]);
+
 
 echo $rjs;
 

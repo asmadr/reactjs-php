@@ -102,10 +102,15 @@ class ReactJS {
 		if (!file_exists($opt['require']))
 			throw new Exception("File module note exists: {$opt['require']}");
 
+		$renderMethod = true === $opt['static']
+			? 'ReactDOMServer.renderToStaticMarkup'
+			: 'ReactDOMServer.renderToString'
+			;
+
 		$this->entry = (object) $opt;
 
 		$this->entry->js = implode(";\n", [
-			sprintf('__react_html=ReactDOMServer.renderToString(React.createFactory(%s)(%s))',
+			sprintf("__react_html=$renderMethod(React.createFactory(%s)(%s))",
 				$opt['component'],
 				json_encode($opt['props'])
 			),

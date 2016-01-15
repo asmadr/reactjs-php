@@ -25,7 +25,8 @@ class MainComponent extends React.Component {
 	render() {
 		return (
 			<div>
-				<h1>{this.props.title}</h1>
+				<hr/>
+				<h3>{this.props.message}</h3>
 			</div>
 		);
 	}
