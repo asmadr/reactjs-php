@@ -1,6 +1,3 @@
-//import React from 'react';
-import MainComponent from './mainComponent';
-
 /**
  * Main React test application
  */
@@ -23,7 +20,7 @@ class App extends React.Component {
 			<body>
 				<h1>React JS Page</h1>
 				<div id="app"><h2>{this.props.h2}</h2></div>
-				<MainComponent />
+				<DynamicApplicationComponent />
 				<script src="/example/js/bundle/dist.js"></script>
 			</body>
 			</html>

@@ -73,16 +73,22 @@ class ReactJS {
 
 		$this->v8 = new V8Js();
 
-		/*
-				$this->v8->setModuleLoader(function($path) {
-					//var_dump($path);
-					switch ($path) {
-						case 'react': file_get_contents(__DIR__ . '/node_modules/react/dist/react.min.js');
-						default:
-							return file_get_contents(__DIR__ . "/js/bld/$path");
-					}
-				});
-		//*/
+		$this->v8->setModuleLoader(function($path) {
+
+			$pathinfo = pathinfo($path);
+
+			if (!isset($pathinfo['extension'])) $path .= '.js';
+
+			$fullpath = "{$this->opt->js_files}/$path";
+
+			if (file_exists($fullpath)) return file_get_contents($fullpath);
+
+			if (file_exists($pathinfo['filename']) && is_dir($pathinfo['filename'])) {
+				// @todo ...
+			}
+		});
+
+		//$this->execjs($this->source, 'node-env.js');
 	}
 
 	/**
@@ -102,7 +108,7 @@ class ReactJS {
 		if (!file_exists($opt['require']))
 			throw new Exception("File module note exists: {$opt['require']}");
 
-		$renderMethod = true === $opt['static']
+		$renderMethod = true === @$opt['static']
 			? 'ReactDOMServer.renderToStaticMarkup'
 			: 'ReactDOMServer.renderToString'
 			;
@@ -112,7 +118,7 @@ class ReactJS {
 		$this->entry->js = implode(";\n", [
 			sprintf("__react_html=$renderMethod(React.createFactory(%s)(%s))",
 				$opt['component'],
-				json_encode($opt['props'])
+				isset($opt['props']) ? json_encode($opt['props']) : ''
 			),
 			'__react_html;'
 		]);
@@ -124,9 +130,9 @@ class ReactJS {
 	 * @return string
 	 * @throws Exception
 	 */
-	public function preRender() {
+	public function prepareModule() {
 		return
-			$this->source
+			  $this->source
 			. $this->loadFile($this->entry->require)
 			. $this->entry->js;
 	}
@@ -137,7 +143,7 @@ class ReactJS {
 	 * @return string HTML string
 	 */
 	public function render() {
-		return $this->execjs( $this->preRender() );
+		return $this->execjs( $this->prepareModule() );
 	}
 
 	/**
@@ -156,7 +162,7 @@ class ReactJS {
 	 * @return string
 	 */
 	public function __invoke() {
-		return $this->execjs( $this->preRender() );
+		return $this->execjs( $this->prepareModule() );
 	}
 
 	/**
@@ -176,10 +182,10 @@ class ReactJS {
 	 * @param string $js JS code to be executed
 	 * @return string The execution response
 	 */
-	private function execjs($js) {
+	private function execjs($js, $dbgname = 'server-side-render-react.js') {
 		try {
 			//ob_start();
-			return $this->v8->executeString($js, 'server-side-render-react.js');
+			return $this->v8->executeString($js, $dbgname);
 			//return ob_get_clean();
 		}
 		catch (V8JsException $e)
