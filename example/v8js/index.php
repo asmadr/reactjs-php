@@ -2,14 +2,19 @@
 
 require __DIR__ . '/../../libs/ReactJS.php';
 
-$Layout = new ReactJS([
-	'node_modules'	=> __DIR__ . '/../js/node_modules',
-	'js_files'		=> __DIR__ . '/../js/bld'
-]);
+define('NODE_MODULES', __DIR__ . '/../js/node_modules');
+define('JS_DIR', __DIR__ . '/../js/bld');
+
+$config = [
+	'node_modules'	=> NODE_MODULES,
+	'js_files'		=> JS_DIR
+];
+
+$Layout = new ReactJS($config);
 
 $Layout->entry([
 	'component' => 'App',
-	'require'	=> __DIR__ . '/../js/bld/app.js',
+	'require'	=> JS_DIR . '/app.js',
 	'static'	=> true,
 	'props'		=> [
 		'title' => 'SSR React PHP!',
@@ -18,14 +23,11 @@ $Layout->entry([
 ]);
 
 
-$MainComponent = new ReactJS([
-	'node_modules'	=> __DIR__ . '/../js/node_modules',
-	'js_files'		=> __DIR__ . '/../js/bld'
-]);
+$MainComponent = new ReactJS($config);
 
 $MainComponent->entry([
 	'component' => 'MainComponent',
-	'require'	=> __DIR__ . '/../js/bld/mainComponent.js'
+	'require'	=> JS_DIR . '/mainComponent.js'
 ]);
 
 

@@ -122,6 +122,8 @@ class ReactJS {
 			),
 			'__react_html;'
 		]);
+
+		return $this;
 	}
 
 	/**
