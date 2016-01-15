@@ -17,15 +17,15 @@ gulp.task('jsx', () =>
 		.pipe(gulp.dest('./bld'))
 );
 
-gulp.task('bundle', ['jsx'], () =>
-	gulp.src('./bld/app.jsx')
+gulp.task('bundle', () =>
+	gulp.src('./bld/mainComponent.jsx')
 		.pipe(
 			browserify({
 				//entries: ['./js/bld/app'],
 				debug: true,
 				//transform: ['reactify', 'babelify'],
 				extensions: ['.js'],
-				paths: ['./js/src/'],
+				//paths: ['./js/src/'],
 				sourceMap: false
 				//insertGlobals : true
 			})

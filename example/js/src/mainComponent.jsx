@@ -1,4 +1,4 @@
-//import React from 'react';
+import React from 'react';
 //import ChildComponent from './childComponent';
 
 class MainComponent extends React.Component {
@@ -20,6 +20,9 @@ class MainComponent extends React.Component {
 		this.setState({ message });
 	};
 
+	componentDidMount() {
+		setTimeout(() => this.props.onUpdate('Message from timer!'), 2000);
+	}
 
 	/*ChildComponent message={this.state.message} onUpdate={this._update}/*/
 	render() {
