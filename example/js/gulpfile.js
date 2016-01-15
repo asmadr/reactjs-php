@@ -8,17 +8,17 @@ const browserify = require('gulp-browserify');
 //const rename = require("gulp-rename");
 const uglify = require("gulp-uglify");
 
-gulp.task('transform', () =>
-	gulp.src('./js/src/*.jsx')
+gulp.task('jsx', () =>
+	gulp.src('./src/app.jsx')
 		.pipe(babel({
 			presets: ['es2015', 'stage-0', 'react'],
 			sourceMap: false
 		}))
-		.pipe(gulp.dest('./js/bld'))
+		.pipe(gulp.dest('./bld'))
 );
 
-gulp.task('bundle', ['transform'], () =>
-	gulp.src('./js/bld/app.jsx')
+gulp.task('bundle', ['jsx'], () =>
+	gulp.src('./bld/app.jsx')
 		.pipe(
 			browserify({
 				//entries: ['./js/bld/app'],
@@ -30,9 +30,9 @@ gulp.task('bundle', ['transform'], () =>
 				//insertGlobals : true
 			})
 		)
-		.pipe(concat('dist.js'))
+		.pipe(concat('bundle.js'))
 		//.pipe(uglify())
-		.pipe(gulp.dest('./js/bundle'))
+		.pipe(gulp.dest('./dist'))
 );
 
 gulp.task('default', ['bundle'], () => {});

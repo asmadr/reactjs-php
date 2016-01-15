@@ -8,7 +8,7 @@ $rjs = new ReactJS([
 
 $rjs->entry([
 	'component' => 'MainComponent',
-	'require'	=> __DIR__ . '/../js/bld/mainComponent.js',
+	'require'	=> __DIR__ . '/../js/bld/app.js',
 	'props'		=> ['title' => 'SSR React PHP!']
 ]);
 
