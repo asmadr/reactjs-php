@@ -1,0 +1,19 @@
+{
+  "name": "i0z/reactjs-php",
+  "description": "ReactJS.php is a library that uses the Facebook's React library to render UI components on the server-side with PHP",
+  "type": "library",
+  "license": "Free4all!",
+  "authors": [
+    {
+      "name": "Alexander Mayorov",
+      "email": "alexander@majorov.su"
+    }
+  ],
+  "minimum-stability": "beta",
+  "require": {
+    "ext-v8js": ">=1.1.0"
+  },
+  "autoload": {
+    "classmap": ["libs/ReactJS.php"]
+  }
+}
