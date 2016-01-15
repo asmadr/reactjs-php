@@ -2,12 +2,12 @@
 
 require __DIR__ . '/../../libs/ReactJS.php';
 
-$rjs = new ReactJS([
+$Layout = new ReactJS([
 	'node_modules'	=> __DIR__ . '/../js/node_modules',
 	'js_files'		=> __DIR__ . '/../js/bld'
 ]);
 
-$rjs->entry([
+$Layout->entry([
 	'component' => 'App',
 	'require'	=> __DIR__ . '/../js/bld/app.js',
 	'static'	=> true,
@@ -17,7 +17,24 @@ $rjs->entry([
 	]
 ]);
 
-echo $rjs;
+
+$MainComponent = new ReactJS([
+	'node_modules'	=> __DIR__ . '/../js/node_modules',
+	'js_files'		=> __DIR__ . '/../js/bld'
+]);
+
+$MainComponent->entry([
+	'component' => 'MainComponent',
+	'require'	=> __DIR__ . '/../js/bld/mainComponent.js'
+]);
+
+
+// Render static layout and React components
+echo $Layout([
+	'domContainerNode' => '<div id="app"></div>',
+	'component' => $MainComponent
+]);
+
 
 
 #EOF#

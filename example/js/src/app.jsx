@@ -19,8 +19,8 @@ class App extends React.Component {
 			</head>
 			<body>
 				<h1>React JS Page</h1>
-				<div id="app"><h2>{this.props.h2}</h2></div>
-				<DynamicApplicationComponent />
+				<h2>{this.props.h2}</h2>
+				<div id="app"></div>
 				<script src="/example/js/bundle/dist.js"></script>
 			</body>
 			</html>

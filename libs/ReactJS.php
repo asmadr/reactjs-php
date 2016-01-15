@@ -161,7 +161,21 @@ class ReactJS {
 	 *
 	 * @return string
 	 */
-	public function __invoke() {
+	public function __invoke(array $opt = []) {
+
+		if ($opt['domContainerNode']) {
+			$d = preg_split('~>\s*</~s', $opt['domContainerNode']);
+			$d[0] .= '>';
+			$d[1] = "</{$d[1]}";
+
+			return str_replace(
+				$opt['domContainerNode'],
+				"{$d[0]}{$opt['component']->render()}{$d[0]}",
+				$this->render()
+			);
+
+		}
+
 		return $this->execjs( $this->prepareModule() );
 	}
 
