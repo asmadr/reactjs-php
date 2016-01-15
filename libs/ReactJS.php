@@ -38,13 +38,15 @@ class ReactJS {
 		 */
 		$entry,
 
+		$renderPage,
+
 		/**
 		 * Default configuration
 		 * @var array|object
 		 */
 		$opt = [
 		'node_modules' => 'node_modules'
-	]
+		]
 	;
 
 	/**
@@ -126,6 +128,31 @@ class ReactJS {
 		return $this;
 	}
 
+
+	public function page(array $opt) {
+
+		$this->entry($opt['layout']);
+
+		$src =
+			  $this->source
+			. $this->loadFile($this->entry->require)
+			. $this->entry->js;
+
+		$layout = $this->execjs($src);
+
+		$this->entry($opt['app']);
+
+		$component =
+			  $this->loadFile($this->entry->require)
+			. $this->entry->js;
+
+		return $this->renderPage = $this->replaceDomContainerNode(
+			$opt['app'],
+			$this->execjs($component),
+			$layout
+		);
+	}
+
 	/**
 	 * Build HTML markup
 	 *
@@ -145,6 +172,9 @@ class ReactJS {
 	 * @return string HTML string
 	 */
 	public function render() {
+		if (!is_null($this->renderPage))
+			return $this->renderPage;
+
 		return $this->execjs( $this->prepareModule() );
 	}
 
@@ -166,20 +196,29 @@ class ReactJS {
 	public function __invoke(array $opt = []) {
 
 		if ($opt['domContainerNode']) {
-			$d = preg_split('~>\s*</~s', $opt['domContainerNode']);
-			$d[0] .= '>';
-			$d[1] = "</{$d[1]}";
-
-			return str_replace(
-				$opt['domContainerNode'],
-				"{$d[0]}{$opt['component']->render()}{$d[0]}",
+			return $this->replaceDomContainerNode(
+				$opt,
+				$opt['component']->render(),
 				$this->render()
 			);
-
 		}
 
 		return $this->execjs( $this->prepareModule() );
 	}
+
+	private function replaceDomContainerNode(array $opt, $component, $layout) {
+
+		$d = preg_split('~>\s*</~s', $opt['domContainerNode']);
+		$d[0] .= '>';
+		$d[1] = "</{$d[1]}";
+
+		return str_replace(
+			$opt['domContainerNode'],
+			"{$d[0]}{$component}{$d[0]}",
+			$layout
+		);
+	}
+
 
 	/**
 	 * Custom error handler. The default one var_dumps the exception
